@@ -15,7 +15,7 @@ let rightIndex;
 
 
 
-let rounds = 5;
+let rounds = 25;
 
 
 
