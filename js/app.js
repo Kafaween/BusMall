@@ -76,8 +76,11 @@ function displayImages(){
   
   
   leftImageElement.src=productImage.allproducts[leftIndex].source;
+  productImage.allproducts[leftIndex].shown++;
   rightImageElement.src = productImage.allproducts[rightIndex].source;
+  productImage.allproducts[midIndex].shown++;
   midImageElement.src=productImage.allproducts[midIndex].source
+  productImage.allproducts[rightIndex].shown++;
 
 }
 displayImages();
@@ -104,18 +107,18 @@ function handleClicking(event){
          
         if(event.target.id === 'left-image'){
           productImage.allproducts[leftIndex].votes++;
-          productImage.allproducts[leftIndex].shown++;
+          
 
           
         }
         else if(event.target.id ==='mid-image'){
             productImage.allproducts[midIndex].votes++;
-            productImage.allproducts[midIndex].shown++;
+            
 
         }
         else if(event.target.id ==='right-image'){
             productImage.allproducts[rightIndex].votes++;
-            productImage.allproducts[rightIndex].shown++;
+            
         }
         displayImages();
     }else{
@@ -137,6 +140,7 @@ function gettingList(){
     let li = document.createElement('li');
     ul.appendChild(li);
     li.textContent = `${productImage.allproducts[i].name} had ${productImage.allproducts[i].votes} Votes, and was seen ${productImage.allproducts[i].shown} times`;
+    but.removeEventListener("click",gettingList)
   }
 
 }
