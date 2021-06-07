@@ -1,13 +1,16 @@
 'use strict';
 
-
+let st=0;
 let leftImageElement = document.getElementById('left-image');
 let midImageElement = document.getElementById('mid-image');
 let rightImageElement = document.getElementById('right-image');
 let sec=document.getElementById("sec-one")
 let but=document.getElementById("b")
+let invalid=[]
+let arrOfNames = [];
+let arrOfVotes = [];
 
-
+let c=0;
 let leftIndex; 
 let midIndex;
 let rightIndex;
@@ -15,7 +18,7 @@ let rightIndex;
 
 
 
-let rounds = 25;
+let rounds = 7;
 
 
 
@@ -31,6 +34,7 @@ function productImage(name,source){
   this.votes = 0;
   this.shown = 0;
   productImage.allproducts.push(this);
+  arrOfNames.push(this.name);
 }
 
 
@@ -53,7 +57,7 @@ new productImage('scissors','../imgs/scissors.jpg')
 new productImage('shark','../imgs/shark.jpg')
 new productImage('sweep','../imgs/sweep.png')
 new productImage('unicorn','../imgs/tauntaun.jpg')
-new productImage('sasst-goat','../imgs/unicorn.jpg')
+new productImage('sasst-product','../imgs/unicorn.jpg')
 new productImage('usb','../imgs/usb.gif')
 new productImage('water-can','../imgs/water-can.jpg')
 new productImage('wine-glass','../imgs/wine-glass.jpg')
@@ -68,12 +72,25 @@ function displayImages(){
   rightIndex = generateRandomIndex(); 
   midIndex=generateRandomIndex()
   
+  if (c==0){
   
-  while(leftIndex === rightIndex  || leftIndex === midIndex ||midIndex === rightIndex ){
+  while(leftIndex === rightIndex  || leftIndex === midIndex ||midIndex === rightIndex)    {
+    
     leftIndex = generateRandomIndex();
     midIndex= generateRandomIndex()
+  }}
+  else {
+
+    while(invalid.includes(leftIndex) || invalid.includes(midIndex) || invalid.includes(rightIndex) || leftIndex === rightIndex  || leftIndex === midIndex ||midIndex === rightIndex){
+      leftIndex = generateRandomIndex();
+      midIndex= generateRandomIndex()
+      rightIndex= generateRandomIndex()
+
+    }
   }
-  
+    
+
+
   
   leftImageElement.src=productImage.allproducts[leftIndex].source;
   productImage.allproducts[leftIndex].shown++;
@@ -82,6 +99,11 @@ function displayImages(){
   midImageElement.src=productImage.allproducts[midIndex].source
   productImage.allproducts[rightIndex].shown++;
 
+
+
+invalid=[leftIndex,midIndex,rightIndex]
+console.log(invalid)
+c++
 }
 displayImages();
 
@@ -102,7 +124,7 @@ rightImageElement.addEventListener('click',handleClicking);}
 function handleClicking(event){
     countsClick++;
     
-    console.log(event.target.id);
+    
     if(rounds >= countsClick){
          
         if(event.target.id === 'left-image'){
@@ -122,7 +144,7 @@ function handleClicking(event){
         }
         displayImages();
     }else{
-      console.log(productImage.allproducts);
+      
    
     leftImageElement.removeEventListener('click',handleClicking);
     midImageElement.removeEventListener('click',handleClicking);
@@ -133,14 +155,48 @@ function handleClicking(event){
 
 
 but.addEventListener("click",gettingList)
+let arrOfSeen =[];
 
 function gettingList(){
+  
   let ul = document.getElementById('unList');
   for(let i = 0 ; i <productImage.allproducts.length; i++ ){
+    arrOfVotes.push(productImage.allproducts[i].votes);
+    arrOfSeen.push(productImage.allproducts[i].shown);
     let li = document.createElement('li');
     ul.appendChild(li);
     li.textContent = `${productImage.allproducts[i].name} had ${productImage.allproducts[i].votes} Votes, and was seen ${productImage.allproducts[i].shown} times`;
-    but.removeEventListener("click",gettingList)
+    
   }
+  but.removeEventListener("click",gettingList)
+    sec.removeEventListener("click",addevent)
+    gettingChart()
+}
 
+
+
+function gettingChart(){
+let ctx = document.getElementById('myChart')
+let myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: arrOfNames,
+        datasets: [{
+            label: '# of Votes',
+            data: arrOfVotes,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.4)',
+            ],
+            borderWidth: 1
+        },{
+          label: '# of Seen',
+          data: arrOfSeen,
+          backgroundColor: [
+              'rgba(100, 120, 132, 0.5)',
+          ],
+          borderWidth: 1
+      }
+      ]
+    },
+});
 }
