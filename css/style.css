@@ -14,6 +14,7 @@ body{
 #sec-one{
     float: left;
     width: 50%;
+    justify-content: left;
 }   
 #sec-two{
     float: right;
@@ -35,3 +36,15 @@ li{
     list-style: none;
     color: cornflowerblue;
 }
+
+#sec-one img{
+    width: 80%;
+}
+
+#sec-one p{
+    
+    color: aliceblue;
+    text-align: center;
+}
+
+
