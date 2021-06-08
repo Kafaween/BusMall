@@ -4,6 +4,9 @@ let st=0;
 let leftImageElement = document.getElementById('left-image');
 let midImageElement = document.getElementById('mid-image');
 let rightImageElement = document.getElementById('right-image');
+const logs1 = document.getElementById('logs1');
+const logs2 = document.getElementById('logs2');
+const logs3 = document.getElementById('logs3');
 let sec=document.getElementById("sec-one")
 let but=document.getElementById("b")
 let invalid=[]
@@ -16,9 +19,9 @@ let midIndex;
 let rightIndex;
 
 
+let convert ;
 
-
-let rounds = 7;
+let rounds =9;
 
 
 
@@ -68,6 +71,7 @@ new productImage('wine-glass','../imgs/wine-glass.jpg')
 
 
 function displayImages(){
+  
   leftIndex = generateRandomIndex(); 
   rightIndex = generateRandomIndex(); 
   midIndex=generateRandomIndex()
@@ -93,10 +97,19 @@ function displayImages(){
 
   
   leftImageElement.src=productImage.allproducts[leftIndex].source;
+  logs1.textContent = '';
+
+  logs1.textContent=`voted ${productImage.allproducts[leftIndex].votes} times`
   productImage.allproducts[leftIndex].shown++;
   rightImageElement.src = productImage.allproducts[rightIndex].source;
+  logs2.textContent = '';
+
+  logs2.textContent=`voted ${productImage.allproducts[midIndex].votes} times`
   productImage.allproducts[midIndex].shown++;
   midImageElement.src=productImage.allproducts[midIndex].source
+  logs3.textContent = '';
+
+  logs3.textContent=`voted ${productImage.allproducts[rightIndex].votes} times`
   productImage.allproducts[rightIndex].shown++;
 
 
@@ -105,6 +118,7 @@ invalid=[leftIndex,midIndex,rightIndex]
 console.log(invalid)
 c++
 }
+getFromLs()
 displayImages();
 
 
@@ -117,6 +131,7 @@ function generateRandomIndex(){
 
 sec.addEventListener("click",addevent)
 function addevent(){
+  
 leftImageElement.addEventListener('click',handleClicking);
 midImageElement.addEventListener('click',handleClicking);
 rightImageElement.addEventListener('click',handleClicking);}
@@ -142,6 +157,7 @@ function handleClicking(event){
             productImage.allproducts[rightIndex].votes++;
             
         }
+        saving()
         displayImages();
     }else{
       
@@ -171,6 +187,7 @@ function gettingList(){
   but.removeEventListener("click",gettingList)
     sec.removeEventListener("click",addevent)
     gettingChart()
+    
 }
 
 
@@ -200,3 +217,21 @@ let myChart = new Chart(ctx, {
     },
 });
 }
+
+function saving(){
+  convert=JSON.stringify(productImage.allproducts)
+  localStorage.setItem("product",convert);
+
+} 
+
+
+function getFromLs(){
+  let data=localStorage.getItem("product")
+  let parse=JSON.parse(data)
+  if(parse !=null){
+    productImage.allproducts=parse
+  }
+
+}
+
+
